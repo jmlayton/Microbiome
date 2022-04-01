@@ -1,0 +1,19 @@
+## Purpose: Analyze beta diversity with qiime2
+## Date: 02/03/2022
+
+conda activate qiime2-2021.11
+#beginning of beta diversity analysis ----------------------------------------
+
+qiime diversity beta-group-significance \
+  --i-distance-matrix core-metrics-results/unweighted_unifrac_distance_matrix.qza \
+  --m-metadata-file maltecca_metadata_piglets.tsv \
+  --m-metadata-column gender \ #modify by column and can repeat function
+  --o-visualization visualizations/unweighted-unifrac-gender-significance.qzv \
+  --p-pairwise
+
+#emperor plot
+qiime emperor plot \
+  --i-pcoa core-metrics-results/unweighted_unifrac_pcoa_results.qza \
+  --m-metadata-file maltecca_metadata_piglets.tsv \
+  --p-custom-axes room \
+  --o-visualization visualizations/unweighted-unifrac-emperor-room.qzv

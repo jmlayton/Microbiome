@@ -1,0 +1,24 @@
+mkdir emp-paired-end-sequences
+cd emp-paired-end-sequences
+
+wget \
+  -O "forward.fastq.gz" \
+  "https://data.qiime2.org/2021.8/tutorials/atacama-soils/1p/forward.fastq.gz"
+
+wget \
+  -O "reverse.fastq.gz" \
+  "https://data.qiime2.org/2021.8/tutorials/atacama-soils/1p/reverse.fastq.gz"
+
+wget \
+  -O "barcodes.fastq.gz" \
+  "https://data.qiime2.org/2021.8/tutorials/atacama-soils/1p/barcodes.fastq.gz"
+
+wget \
+  -O "sample-metadata.tsv" \
+  "https://data.qiime2.org/2021.4/tutorials/moving-pictures/sample_metadata.tsv"
+
+wget \
+  -O "silva-138-99-seqs.qza" \
+  "https://data.qiime2.org/2021.4/common/silva-138-99-seqs.qza"
+
+

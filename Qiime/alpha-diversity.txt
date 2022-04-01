@@ -1,0 +1,74 @@
+## Purpose: Analyze Alpha diversity
+## Date: 02/03/2022
+
+conda activate qiime2-2021.11
+
+## alpha and beta diversity analysis
+qiime diversity core-metrics-phylogenetic \
+  --i-phylogeny rooted-tree.qza \
+  --i-table maltecca-table.qza \
+  --p-sampling-depth 500 \
+  --m-metadata-file maltecca_metadata_piglets.tsv \
+  --output-dir core-metrics-results
+
+#test for associations between categorical metadata columns and alpha diversity data --------------------------
+mkdir alpha_diversity
+
+qiime diversity alpha \
+    --i-table maltecca-table.qza \
+    --p-metric chao1 \
+    --o-alpha-diversity alpha_diversity/chao1.qza 
+
+qiime diversity alpha-group-significance \
+  --i-alpha-diversity alpha_diversity/chao1.qza \
+  --m-metadata-file maltecca_metadata_piglets.tsv \
+  --o-visualization visualizations/chao1.qzv
+
+qiime diversity alpha \
+    --i-table maltecca-table.qza \
+    --p-metric simpson \
+    --o-alpha-diversity alpha_diversity/simpson.qza 
+
+qiime diversity alpha-group-significance \
+    --i-alpha-diversity alpha_diversity/simpson.qza  \
+    --m-metadata-file maltecca_metadata_piglets.tsv \
+    --o-visualization visualizations/simpson.qzv 
+
+qiime diversity alpha \
+    --i-table maltecca-table.qza \
+    --p-metric shannon \
+    --o-alpha-diversity alpha_diversity/shannon.qza 
+
+qiime diversity alpha-group-significance \
+    --i-alpha-diversity alpha_diversity/shannon.qza  \
+    --m-metadata-file maltecca_metadata_piglets.tsv \
+    --o-visualization visualizations/shannon.qzv 
+
+qiime diversity alpha-phylogenetic \
+    --i-table maltecca_table.qza \
+    --i-phylogeny rooted-tree.qza \
+    --p-metric simpson \
+    --o-alpha-diversity alpha_diversity/shannon.qza \
+
+qiime diversity alpha-group-significance \
+  --i-alpha-diversity alpha_diversity/simpson.qza  \
+  --m-metadata-file maltecca_metadata_piglets.tsv \
+  --o-visualization visualizations/simpson.qzv
+
+qiime diversity alpha-group-significance \
+  --i-alpha-diversity alpha_diversity/chao1.qza  \
+  --m-metadata-file maltecca_metadata_piglets.tsv \
+  --o-visualization visualizations/chao1.qzv
+
+qiime diversity alpha-group-significance \
+  --i-alpha-diversity alpha_diversity/shannon.qza  \
+  --m-metadata-file maltecca_metadata_piglets.tsv \
+  --o-visualization visualizations/shannon.qzv
+
+qiime diversity alpha-correlation \
+    --i-alpha-diversity core-metrics-results/faith_pd_vector.qza \
+    --m-metadata-file maltecca_metadata_piglets.tsv \
+    --p-method spearman \
+    --o-visualization visualizations/alpha-correlation.qzv
+
+#end of alpha diversity analysis

@@ -1,0 +1,41 @@
+#################### To subsample data follow below #################################
+qiime demux emp-paired \
+--i-sequences Sequence-Data-Piglets/20211214_malteccademux.qza \
+ --p-fraction 0.3 \
+--o-subsampled-sequences malteccademux-subsample.qza
+####################################
+
+############ To filter samples with q2-demux run the following ##############
+qiime tools export \
+    --input-path Sequence-Data-Piglets/20211214_malteccademux.qzv \
+    --output-path ./demux/
+
+qiime demux filter-samples \
+    --i-demux Sequence-Data-Piglets/20211214_malteccademux.qza \
+    --m-metadata-file ./demux/per-sample-fastq-couts.tsv \
+    --p-where 'CAST ([forward sequence count] AS INT) > 100' \
+    --o-filtered-demux filtered_demux.qza
+###########################################################################
+
+qiime dada2 denoise-paired \
+    --i-demultiplexed-seqs Sequence-Data-Piglets/20211214_malteccademux.qza \
+    --p-trim-left-f 13 \
+    --p-trim-left-r 13 \
+    --p-trunc-len-f 150 \
+    --p-trunc-len-r 150 \
+    --o-table maltecca-table.qza \
+    --o-representative-sequences rep-seqs.qza \
+    --o-denoising-stats denoising-stats.qza 
+
+qiime feature-table summarize \
+    --i-table maltecca-table.qza \
+    --o-visualization maltecca-table.qzv \
+    --m-sample-metadata-file Sequence-Data-Priglets/20211214_maltecca.txt
+
+qiime feature-table tabulate-seqs \
+    --i-data rep-seqs.qza \
+    --o-visualization rep-seqs.qzv
+
+qiime metadata tabulate \
+    --m-input-file denoising-stats.qza \
+    --o-visualization denoising-stats.qzv

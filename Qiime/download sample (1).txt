@@ -1,0 +1,64 @@
+#install conda
+#install wget
+#install qiime2 
+#conda update conda
+#conda install wget
+#wget https://data.qiime2.org/distro/core/qiime2-2021.8-py38-linux-conda.yml
+#conda env create -n qiime2-2021.8 --file qiime2-2021.8-py38-linux-conda.yml
+# OPTIONAL CLEANUP
+
+#rm qiime2-2021.8-py38-linux-conda.yml
+mkdir emp-paired-end-sequences
+cd emp-paired-end-sequences
+
+#install ngmerge (git clone https://github.com/jsh58/NGmerge.git)
+
+mv NGmerge emp-paired-end-sequences
+cd emp-paired-end-sequences
+
+#install forward & reverse reads, barcodes, metadata, and silva classifier
+wget \
+  -O "forward.fastq.gz" \
+  "https://data.qiime2.org/2021.8/tutorials/atacama-soils/1p/forward.fastq.gz"
+
+wget \
+  -O "reverse.fastq.gz" \
+  "https://data.qiime2.org/2021.8/tutorials/atacama-soils/1p/reverse.fastq.gz"
+
+wget \
+  -O "barcodes.fastq.gz" \
+  "https://data.qiime2.org/2021.8/tutorials/atacama-soils/1p/barcodes.fastq.gz"
+
+wget \
+  -O "sample-metadata.tsv" \
+  "https://data.qiime2.org/2021.4/tutorials/moving-pictures/sample_metadata.tsv"
+
+wget \
+  -O "silva-138-99-seqs.qza" \
+  "https://data.qiime2.org/2021.4/common/silva-138-99-seqs.qza"
+
+#Ngmerge 
+NGmerge/NGmerge -1 forward.fastq.gz  -2 reverse.fastq.gz  -o NGmerge/sequenced -a -m 20 -e 50
+NGmerge/NGmerge -1 NGmerge/sequenced_1.fastq.gz  -2 NGmerge/sequenced_2.fastq.gz  -o multi-sequences
+
+#PRINSEQ (Online software)
+wget \
+	-O "multi-sequenced.assembled_bad.fastq" \
+	"https://edwards.sdsu.edu/cgi-bin/prinseq/tmp/1634591999d/multi-sequence.assembled_bad.fastq"
+wget \
+	-O "multi-sequence.assembled_good.fastq" \
+	"https://edwards.sdsu.edu/cgi-bin/prinseq/tmp/1634591999d/multi-sequence.assembled_good.fastq"
+wget \
+	-O "multi-sequence.assembled_log.txt"
+	"https://edwards.sdsu.edu/cgi-bin/prinseq/tmp/1634591999d/multi-sequence.assembled_log.txt"
+wget \
+	-O "multi-sequence.assembled_params.txt"
+	"https://edwards.sdsu.edu/cgi-bin/prinseq/tmp/1634591999d/multi-sequence.assembled_params.txt"
+
+
+
+
+
+
+
+
